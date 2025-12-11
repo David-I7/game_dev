@@ -4,26 +4,55 @@ window.addEventListener("load", () => {
     const ctx = canvas.getContext("2d");
     const CANVAS_WIDTH = (canvas.width = window.innerWidth);
     const CANVAS_HEIGHT = (canvas.height = window.innerHeight);
+    const fullScreenButton = document.getElementById("fullScreenButton");
     const keyEvents = [
         "ArrowDown",
         "ArrowUp",
         "ArrowLeft",
         "ArrowRight",
+        "SwipeUp",
+        "SwipeDown",
     ];
     const keyEventsSet = new Set(keyEvents);
     // adds event listeners and keeps track of key presses
     class InputHandler {
         constructor() {
             this.keys = new Set();
+            this.touchY = 0;
+            this.touchThreshold = 30;
             window.addEventListener("keydown", (e) => {
                 if (keyEventsSet.has(e.key)) {
                     this.keys.add(e.key);
+                }
+                else if (e.key == "Enter" && gameover == true) {
+                    restartGame();
                 }
             });
             window.addEventListener("keyup", (e) => {
                 if (keyEventsSet.has(e.key)) {
                     this.keys.delete(e.key);
                 }
+            });
+            const handleTouchMove = (e) => {
+                const swipeDistance = e.changedTouches[0].pageY - this.touchY;
+                if (swipeDistance < -this.touchThreshold) {
+                    this.keys.add("SwipeUp");
+                }
+                else if (swipeDistance > this.touchThreshold) {
+                    this.keys.add("SwipeDown");
+                    if (gameover) {
+                        restartGame();
+                    }
+                }
+            };
+            window.addEventListener("touchstart", (e) => {
+                this.touchY = e.changedTouches[0].pageY;
+                window.addEventListener("touchmove", handleTouchMove);
+            });
+            window.addEventListener("touchend", () => {
+                window.removeEventListener("touchmove", handleTouchMove);
+                this.keys.delete("SwipeDown");
+                this.keys.delete("SwipeUp");
             });
         }
     }
@@ -87,7 +116,8 @@ window.addEventListener("load", () => {
             this.x += this.vx * pxPerSec;
             this.x = Math.max(Math.min(this.gameWidth - this.width, this.x), 0);
             //vertical movement
-            if (input.keys.has("ArrowUp") && this.onGround()) {
+            if ((input.keys.has("ArrowUp") || input.keys.has("SwipeUp")) &&
+                this.onGround()) {
                 this.vy -= 4000;
             }
             this.y += this.vy * pxPerSec;
@@ -105,6 +135,12 @@ window.addEventListener("load", () => {
         }
         onGround() {
             return this.y >= this.gameHeight - this.height;
+        }
+        restart() {
+            this.x = 100;
+            this.y = this.gameHeight - this.height;
+            this.frameY = 0;
+            this.maxFrameX = 9;
         }
     }
     class Background {
@@ -130,6 +166,9 @@ window.addEventListener("load", () => {
         draw(ctx) {
             ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             ctx.drawImage(this.image, this.x + this.width - 2, this.y, this.width, this.height);
+        }
+        restart() {
+            this.x = 0;
         }
     }
     class Enemy {
@@ -204,6 +243,24 @@ window.addEventListener("load", () => {
         ctx.fillStyle = "white";
         ctx.fillText(`Score: ${score}`, 18, 48);
     }
+    function restartGame() {
+        player.restart();
+        background.restart();
+        enemies = [];
+        score = 0;
+        gameover = false;
+        ctx.textAlign = "left";
+        animate(0);
+    }
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            canvas.requestFullscreen().catch((e) => alert(e.message));
+        }
+        else {
+            document.exitFullscreen();
+        }
+    }
+    fullScreenButton.addEventListener("click", toggleFullScreen);
     function animate(timestamp) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         // delta time is higher for slower pc's
@@ -220,9 +277,9 @@ window.addEventListener("load", () => {
         else {
             ctx.textAlign = "center";
             ctx.fillStyle = "black";
-            ctx.fillText(`GAME OVER, try again!`, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+            ctx.fillText(`GAME OVER, press Enter to restart!`, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
             ctx.fillStyle = "white";
-            ctx.fillText(`GAME OVER, try again!`, CANVAS_WIDTH / 2 - 2, CANVAS_HEIGHT / 2 - 2);
+            ctx.fillText(`GAME OVER, press Enter to restart!`, CANVAS_WIDTH / 2 - 2, CANVAS_HEIGHT / 2 - 2);
         }
     }
     animate(0);

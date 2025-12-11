@@ -16,7 +16,7 @@ class Raven {
     destWidth;
     destHeight;
     y;
-    directionX = Math.random() * 4 + 1;
+    directionX = Math.random() * 3 + 1;
     directionY = Math.random() * 5 - 2.5;
     sizeModifier;
     isAnimationComplete = false;
@@ -27,6 +27,7 @@ class Raven {
     flapInterval = Math.random() * 50 + 50;
     randomColors;
     color;
+    hasTrail = false;
     constructor() {
         this.image = new Image();
         this.image.src = "assets/images/raven.png";
@@ -42,6 +43,7 @@ class Raven {
             Math.floor(Math.random() * 255),
         ];
         this.color = `rgb(${this.randomColors[0]},${this.randomColors[1]},${this.randomColors[2]})`;
+        this.hasTrail = Math.random() > 0.5;
     }
     update(delta) {
         this.x -= this.directionX;
@@ -54,7 +56,11 @@ class Raven {
         if (this.timeSinceFlap > this.flapInterval) {
             this.frame = (this.frame + 1) % this.maxFrame;
             this.timeSinceFlap = 0;
-            particles.push(new Particle(this.x, this.y, this.destWidth, this.color));
+            if (this.hasTrail) {
+                for (let i = 0; i < 5; ++i) {
+                    particles.push(new Particle(this.x, this.y, this.destWidth, this.color));
+                }
+            }
         }
         if (this.x + this.destWidth < 0)
             gameOver = true;
@@ -117,7 +123,7 @@ class Particle {
         this.y = y;
         this.size = size;
         this.color = color;
-        this.x = x + size / 2;
+        this.x = x + size / 2 + Math.random() * 50 - 25;
         this.y = y + size / 3;
         this.radius = (Math.random() * size) / 10;
     }
@@ -128,10 +134,12 @@ class Particle {
             this.isAnimationComplete = true;
     }
     draw() {
+        ctx.globalAlpha = Math.max(0, 1 - this.radius / this.maxRadius);
         ctx.beginPath();
         ctx.fillStyle = this.color;
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
+        ctx.globalAlpha = 1;
     }
 }
 let ravens = [];
