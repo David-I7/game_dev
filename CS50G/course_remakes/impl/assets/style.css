@@ -1,0 +1,30 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "flappy";
+  src: url("/assets/fonts/flappy.ttf");
+}
+
+@font-face {
+  font-family: "font";
+  src: url("/assets/fonts/font.ttf");
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: black;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+}
+
+img {
+  display: none;
+}
