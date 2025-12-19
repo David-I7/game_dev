@@ -7,7 +7,7 @@ export function displayFps(
     font?: string;
     x?: number;
     y?: number;
-  }
+  } = {}
 ) {
   let timer = 0;
   let cnt = 0;

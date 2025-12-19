@@ -1,5 +1,5 @@
-import KeyboardManager from "./keyboardManager";
-export default class InputManager {
+import KeyboardManager from "./keyboardManager.js";
+export class InputManager {
     keyboard = new KeyboardManager();
     _mousePressed = {
         x: 0,
@@ -28,8 +28,11 @@ export default class InputManager {
     }
     update() {
         this._mousePressed.pressed = false;
+        this.keyboard.update();
     }
     reset() {
         this._mousePressed.pressed = false;
+        this.keyboard.reset();
     }
 }
+export const gInputManager = new InputManager();

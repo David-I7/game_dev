@@ -16,7 +16,7 @@ type Sounds =
 type Graphics = "background" | "main" | "arrows" | "hearts" | "particle";
 type Frames = "arrows" | "paddles" | "balls" | "bricks" | "hearts";
 
-export default class ResourceManager {
+export class ResourceManager {
   static sounds: Record<Sounds, HTMLAudioElement> = {} as Record<
     Sounds,
     HTMLAudioElement
@@ -141,15 +141,15 @@ export default class ResourceManager {
     width: number,
     height: number
   ): Promise<ImageBitmap[]> {
-    const ROWS = image.height / height;
-    const COLS = image.width / width;
+    const ROWS = Math.ceil(image.height / height);
+    const COLS = Math.ceil(image.width / width);
 
     const spriteSheet: Promise<ImageBitmap>[] = [];
 
     for (let r = 0; r < ROWS; ++r) {
       for (let c = 0; c < COLS; ++c) {
         spriteSheet.push(
-          createImageBitmap(image, r * ROWS, c * COLS, width, height)
+          createImageBitmap(image, c * width, r * height, width, height)
         );
       }
     }
