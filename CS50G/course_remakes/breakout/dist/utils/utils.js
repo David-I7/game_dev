@@ -1,4 +1,4 @@
-export function displayFps(unit = "sec", opt) {
+export function displayFps(unit = "sec", opt = {}) {
     let timer = 0;
     let cnt = 0;
     const interval = unit == "sec" ? 1 : 1000;

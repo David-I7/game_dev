@@ -1,4 +1,4 @@
-export default class ResourceManager {
+export class ResourceManager {
     static sounds = {};
     static graphics = {};
     static frames = {};
@@ -89,12 +89,12 @@ export default class ResourceManager {
         });
     }
     static async generateQuads(image, width, height) {
-        const ROWS = image.height / height;
-        const COLS = image.width / width;
+        const ROWS = Math.ceil(image.height / height);
+        const COLS = Math.ceil(image.width / width);
         const spriteSheet = [];
         for (let r = 0; r < ROWS; ++r) {
             for (let c = 0; c < COLS; ++c) {
-                spriteSheet.push(createImageBitmap(image, r * ROWS, c * COLS, width, height));
+                spriteSheet.push(createImageBitmap(image, c * width, r * height, width, height));
             }
         }
         return await Promise.all(spriteSheet);

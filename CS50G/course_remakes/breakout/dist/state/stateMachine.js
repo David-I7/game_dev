@@ -1,5 +1,7 @@
 import EmptyState from "./states/empty.js";
-export class StateMachine {
+import { PaddleSelect } from "./states/paddleSelect.js";
+import { StartState } from "./states/startState.js";
+class StateMachine {
     states;
     static empty = new EmptyState();
     current = StateMachine.empty;
@@ -20,3 +22,9 @@ export class StateMachine {
         this.current.draw(ctx);
     }
 }
+export const gStateMachine = new StateMachine({
+    start: new StartState(),
+    play: new EmptyState(),
+    paddleSelect: new PaddleSelect(),
+    highScore: new EmptyState(),
+});
