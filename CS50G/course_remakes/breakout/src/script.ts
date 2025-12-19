@@ -1,13 +1,19 @@
-window.addEventListener("load", async () => {
-  const deps = await import("./dependencies.js");
+import "./dependencies.js";
+import ResourceManager from "./dependencies.js";
+ResourceManager.load();
 
+window.addEventListener("load", () => {
   const canvas = document.getElementById("canvas1") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d")!;
   const CANVAS_WIDTH = (canvas.width = window.innerWidth);
   const CANVAS_HEIGHT = (canvas.height = window.innerHeight);
 
   let lastTime = 0;
-
+  console.log(
+    ResourceManager.frames,
+    ResourceManager.graphics,
+    ResourceManager.sounds
+  );
   function animate(timestamp: number) {
     const dt = (lastTime - timestamp) / 1000;
     lastTime = timestamp;
