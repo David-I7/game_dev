@@ -1,5 +1,8 @@
 import EmptyState from "./states/empty.js";
+import { HighScoreState } from "./states/highScoreState.js";
 import { PaddleSelect } from "./states/paddleSelect.js";
+import { PlayState } from "./states/playState.js";
+import { ServerState } from "./states/serveState.js";
 import { StartState } from "./states/startState.js";
 class StateMachine {
     states;
@@ -24,7 +27,9 @@ class StateMachine {
 }
 export const gStateMachine = new StateMachine({
     start: new StartState(),
-    play: new EmptyState(),
+    play: new PlayState(),
     paddleSelect: new PaddleSelect(),
-    highScore: new EmptyState(),
+    highScore: new HighScoreState(),
+    setHighScore: new EmptyState(),
+    serve: new ServerState(),
 });

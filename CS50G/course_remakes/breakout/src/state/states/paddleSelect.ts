@@ -4,13 +4,16 @@ import {
   gStateMachine,
   ResourceManager,
 } from "../../dependencies.js";
+import { Ball } from "../../entities/ball.js";
+import { LevelState } from "../../entities/levelState.js";
+import { Paddle } from "../../entities/paddle.js";
+import { LevelMaker } from "../../levelMaker.js";
 import State from "./state.js";
 
 export class PaddleSelect implements State {
   paddleSkin = 0;
   paddleSize = 1;
   maxPaddleSkin = 4;
-  scaler = gGameConfig.viewport.dpi * 2;
   update(dt: number): void {
     if (gInputManager.keyboard.wasPressed("ArrowRight")) {
       if (this.paddleSkin < this.maxPaddleSkin - 1) {
@@ -26,11 +29,26 @@ export class PaddleSelect implements State {
       } else {
         ResourceManager.sounds["no-select"].play();
       }
+    } else if (gInputManager.keyboard.wasPressed("Escape")) {
+      gStateMachine.change("start");
     }
 
     if (gInputManager.keyboard.wasPressed("Enter")) {
       ResourceManager.sounds.confirm.play();
-      gStateMachine.change("play");
+      const levelState: LevelState = {
+        ball: Ball.empty(),
+        hearts: 3,
+        level: 1,
+        recoverPoints: 5000,
+        score: 0,
+        bricks: LevelMaker.createLevel(1),
+        paddle: new Paddle(
+          ResourceManager.frames.paddles[
+            this.paddleSkin * this.maxPaddleSkin + this.paddleSize
+          ]
+        ),
+      };
+      gStateMachine.change("serve", levelState);
     }
   }
 
@@ -55,8 +73,8 @@ export class PaddleSelect implements State {
       ResourceManager.frames.paddles[
         this.paddleSkin * this.maxPaddleSkin + this.paddleSize
       ];
-    const paddleW = paddleImg.width * this.scaler;
-    const paddleH = paddleImg.height * this.scaler;
+    const paddleW = paddleImg.width * gGameConfig.viewport.scaler;
+    const paddleH = paddleImg.height * gGameConfig.viewport.scaler;
     ctx.drawImage(
       paddleImg,
       gGameConfig.viewport.width / 2 - paddleW / 2,
@@ -67,8 +85,8 @@ export class PaddleSelect implements State {
 
     const arrowImageLeft = ResourceManager.frames.arrows[0];
     const arrowImageRight = ResourceManager.frames.arrows[1];
-    const arrowW = arrowImageLeft.width * this.scaler;
-    const arrowH = arrowImageLeft.height * this.scaler;
+    const arrowW = arrowImageLeft.width * gGameConfig.viewport.scaler;
+    const arrowH = arrowImageLeft.height * gGameConfig.viewport.scaler;
 
     if (this.paddleSkin == 0) {
       ctx.globalAlpha = 0.5;
@@ -94,6 +112,8 @@ export class PaddleSelect implements State {
     ctx.globalAlpha = 1;
   }
 
-  enter(enterParams?: Record<string, any>): void {}
+  async enter(enterParams?: Record<string, any>): Promise<void> {
+    await ResourceManager.awaitLoad();
+  }
   exit(): void {}
 }
