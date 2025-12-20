@@ -16,5 +16,6 @@ export const gGameConfig = {
         width: 0,
         height: 0,
         dpi: 1,
+        scaler: 1,
     },
 };

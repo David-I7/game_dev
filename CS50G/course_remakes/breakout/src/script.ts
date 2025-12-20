@@ -6,7 +6,6 @@ import {
   gGameConfig,
   gInputManager,
 } from "./dependencies.js";
-ResourceManager.load();
 
 window.addEventListener("load", () => {
   const canvas = document.getElementById("canvas1") as HTMLCanvasElement;
@@ -16,6 +15,7 @@ window.addEventListener("load", () => {
   gGameConfig.viewport.width = CANVAS_WIDTH;
   gGameConfig.viewport.height = CANVAS_HEIGHT;
   gGameConfig.viewport.dpi = window.devicePixelRatio;
+  gGameConfig.viewport.scaler = gGameConfig.viewport.dpi * 2;
 
   const background = ResourceManager.graphics.background;
   const fps = displayFps("sec", { fillStyle: "white" });

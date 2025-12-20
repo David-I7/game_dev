@@ -1,6 +1,5 @@
 import "./dependencies.js";
 import { displayFps, ResourceManager, gStateMachine, gGameConfig, gInputManager, } from "./dependencies.js";
-ResourceManager.load();
 window.addEventListener("load", () => {
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
@@ -9,6 +8,7 @@ window.addEventListener("load", () => {
     gGameConfig.viewport.width = CANVAS_WIDTH;
     gGameConfig.viewport.height = CANVAS_HEIGHT;
     gGameConfig.viewport.dpi = window.devicePixelRatio;
+    gGameConfig.viewport.scaler = gGameConfig.viewport.dpi * 2;
     const background = ResourceManager.graphics.background;
     const fps = displayFps("sec", { fillStyle: "white" });
     gStateMachine.change("start");
