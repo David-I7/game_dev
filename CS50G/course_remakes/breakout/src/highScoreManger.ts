@@ -6,15 +6,15 @@ export type HighScore = {
 export class HighScoreManger {
   private static highScores: HighScore[] = [
     { name: "AaB", score: "100000" },
-    { name: "aaa", score: "999" },
-    { name: "fef", score: "900" },
-    { name: "AaB", score: "800" },
-    { name: "AaB", score: "700" },
-    { name: "AaB", score: "600" },
-    { name: "AaB", score: "500" },
-    { name: "AaB", score: "400" },
-    { name: "AaB", score: "300" },
-    { name: "AaB", score: "99" },
+    { name: "AAA", score: "999" },
+    { name: "FEF", score: "900" },
+    { name: "ABB", score: "800" },
+    { name: "ABC", score: "700" },
+    { name: "ABD", score: "600" },
+    { name: "ABE", score: "500" },
+    { name: "ABH", score: "400" },
+    { name: "ABK", score: "300" },
+    { name: "ABL", score: "99" },
   ];
 
   static get() {

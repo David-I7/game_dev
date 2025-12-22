@@ -2,6 +2,7 @@ import { gInputManager, gStateMachine } from "../../dependencies.js";
 import { Ball } from "../../entities/ball.js";
 import { LevelState } from "../../entities/levelState.js";
 import { ResourceManager } from "../../resourceManager.js";
+import { drawScore } from "../../utils/game.js";
 import { randInt } from "../../utils/random.js";
 import State from "./state.js";
 
@@ -24,6 +25,7 @@ export class ServerState implements State {
     this.levelState?.bricks.forEach((brick) => {
       if (brick.inPlay) brick.draw(ctx);
     });
+    drawScore(ctx, this.levelState?.score || 0);
   }
   async enter(enterParams: LevelState): Promise<void> {
     await ResourceManager.awaitLoad();

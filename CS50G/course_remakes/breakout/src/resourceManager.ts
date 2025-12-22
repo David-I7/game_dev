@@ -224,6 +224,7 @@ export class ResourceManager {
   }
   private static async generateQuadsBricks(image: HTMLImageElement) {
     const res = await ResourceManager.generateQuads(image, 32, 16);
+
     return res.slice(0, 21);
   }
 }

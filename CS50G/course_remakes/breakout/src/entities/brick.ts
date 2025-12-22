@@ -32,10 +32,17 @@ export class Brick implements Animatable, Drawable {
 
   hit() {
     ResourceManager.sounds["brick-hit-2"].play();
-    if (this.tier == 0) {
+    --this.color;
+    if (this.color < 0) {
+      --this.tier;
+      this.color = 4;
+    }
+    if (this.tier < 0) {
       ResourceManager.sounds["brick-hit-1"].play();
       this.inPlay = false;
+      return;
     }
+    this.setImage(this.color, this.tier);
   }
 
   update(dt: number): void {}
