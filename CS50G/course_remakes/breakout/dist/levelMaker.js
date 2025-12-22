@@ -19,6 +19,11 @@ export class LevelMaker {
         const brickHeight = gGameConfig.viewport.scaler * 16;
         const startX = gGameConfig.viewport.width / 2 - (brickWidth * numCols) / 2;
         const startY = 80;
+        // Responsive design
+        if (startX + brickWidth * numCols > gGameConfig.viewport.width - 64 ||
+            startY + brickHeight * numRows > gGameConfig.viewport.height - 220) {
+            return LevelMaker.createLevel(level);
+        }
         for (let y = 0; y < numRows; y++) {
             const skipPattern = randBool();
             const alternatePattern = randBool();
@@ -48,8 +53,7 @@ export class LevelMaker {
                     alternateFlag = !alternateFlag;
                 }
                 else {
-                    brick.color = solidColor;
-                    brick.tier = solidTier;
+                    brick.setImage(solidColor, solidTier);
                 }
                 bricks.push(brick);
             }

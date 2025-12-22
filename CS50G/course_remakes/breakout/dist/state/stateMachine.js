@@ -1,9 +1,12 @@
 import EmptyState from "./states/empty.js";
+import { GameOverState } from "./states/gameOver.js";
 import { HighScoreState } from "./states/highScoreState.js";
 import { PaddleSelect } from "./states/paddleSelect.js";
 import { PlayState } from "./states/playState.js";
 import { ServerState } from "./states/serveState.js";
+import { SetHighScore } from "./states/setHighScore.js";
 import { StartState } from "./states/startState.js";
+import { VictoryState } from "./states/victory.js";
 class StateMachine {
     states;
     static empty = new EmptyState();
@@ -30,6 +33,8 @@ export const gStateMachine = new StateMachine({
     play: new PlayState(),
     paddleSelect: new PaddleSelect(),
     highScore: new HighScoreState(),
-    setHighScore: new EmptyState(),
+    setHighScore: new SetHighScore(),
     serve: new ServerState(),
+    victory: new VictoryState(),
+    gameOver: new GameOverState(),
 });
