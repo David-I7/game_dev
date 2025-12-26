@@ -31,10 +31,9 @@ export class PaddleSelect implements State {
         AudioManager.play("no-select");
       }
     } else if (gInputManager.keyboard.wasPressed("Escape")) {
+      AudioManager.play("wall-hit");
       gStateMachine.change("start");
-    }
-
-    if (gInputManager.keyboard.wasPressed("Enter")) {
+    } else if (gInputManager.keyboard.wasPressed("Enter")) {
       AudioManager.play("confirm");
       const levelState: LevelState = {
         ball: Ball.empty(),

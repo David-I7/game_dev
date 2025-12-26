@@ -1,6 +1,4 @@
-import { gGameConfig } from "../config/gameConfig.js";
 import Drawable from "../interfaces/drawable.js";
-import { ResourceManager } from "../resourceManager.js";
 
 export function displayFps(
   unit: "ms" | "sec" = "sec",

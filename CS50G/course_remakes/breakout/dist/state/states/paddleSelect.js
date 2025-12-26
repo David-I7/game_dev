@@ -26,9 +26,10 @@ export class PaddleSelect {
             }
         }
         else if (gInputManager.keyboard.wasPressed("Escape")) {
+            AudioManager.play("wall-hit");
             gStateMachine.change("start");
         }
-        if (gInputManager.keyboard.wasPressed("Enter")) {
+        else if (gInputManager.keyboard.wasPressed("Enter")) {
             AudioManager.play("confirm");
             const levelState = {
                 ball: Ball.empty(),

@@ -35,9 +35,11 @@ export class StartState {
         }
         if (gInputManager.keyboard.wasPressed("Enter")) {
             if (this.highlighted == 0) {
+                AudioManager.play("confirm");
                 gStateMachine.change("paddleSelect");
             }
             else {
+                AudioManager.play("confirm");
                 gStateMachine.change("highScore");
             }
         }

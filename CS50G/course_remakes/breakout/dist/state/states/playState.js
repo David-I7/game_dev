@@ -1,7 +1,7 @@
 import { AABBColides, AudioManager, gStateMachine, } from "../../dependencies.js";
 import { gGameConfig } from "../../config/gameConfig.js";
 import { randInt } from "../../utils/random.js";
-import { drawScore } from "../../utils/game.js";
+import { drawStats } from "../../utils/game.js";
 export class PlayState {
     levelState = null;
     enter(enterParams) {
@@ -14,10 +14,10 @@ export class PlayState {
         this.levelState?.paddle.draw(ctx);
         this.levelState?.ball.draw(ctx);
         this.levelState?.bricks.forEach((brick) => {
-            if (brick.inPlay)
+            if (brick.inPlay || brick.particleSystem.particleStates.length)
                 brick.draw(ctx);
         });
-        drawScore(ctx, this.levelState.score);
+        drawStats(ctx, this.levelState.score, this.levelState.hearts);
     }
     update(dt) {
         const ls = this.levelState;
@@ -42,6 +42,7 @@ export class PlayState {
             AudioManager.play("paddle-hit");
         }
         ls.bricks.forEach((brick) => {
+            brick.update(dt);
             if (brick.inPlay && AABBColides(ball, brick)) {
                 ls.score = ls.score + ((brick.tier + 1) * 200 + (brick.color + 1) * 25);
                 brick.hit();
