@@ -1,4 +1,5 @@
-import { gGameConfig } from "../dependencies.js";
+import { AudioManager } from "../audioManager.js";
+import { gGameConfig } from "../config/gameConfig.js";
 import { ResourceManager } from "../resourceManager.js";
 export class Brick {
     x;
@@ -27,14 +28,14 @@ export class Brick {
         this._setImage();
     }
     hit() {
-        ResourceManager.sounds["brick-hit-2"].play();
+        AudioManager.play("brick-hit-2");
         --this.color;
         if (this.color < 0) {
             --this.tier;
             this.color = 4;
         }
         if (this.tier < 0) {
-            ResourceManager.sounds["brick-hit-1"].play();
+            AudioManager.play("brick-hit-1");
             this.inPlay = false;
             return;
         }

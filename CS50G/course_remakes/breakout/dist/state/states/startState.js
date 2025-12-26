@@ -1,5 +1,5 @@
 import { gGameConfig } from "../../config/gameConfig.js";
-import { gInputManager, gStateMachine, ResourceManager, } from "../../dependencies.js";
+import { AudioManager, gInputManager, gStateMachine, } from "../../dependencies.js";
 export class StartState {
     highlighted = 0;
     options = 2;
@@ -26,12 +26,12 @@ export class StartState {
     update(dt) {
         if (gInputManager.keyboard.wasPressed("ArrowDown")) {
             this.highlighted = (this.highlighted + 1) % this.options;
-            ResourceManager.sounds.select.play();
+            AudioManager.play("select");
         }
         else if (gInputManager.keyboard.wasPressed("ArrowUp")) {
             this.highlighted =
                 this.highlighted == 0 ? this.options - 1 : this.highlighted - 1;
-            ResourceManager.sounds.select.play();
+            AudioManager.play("select");
         }
         if (gInputManager.keyboard.wasPressed("Enter")) {
             if (this.highlighted == 0) {

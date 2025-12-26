@@ -1,5 +1,6 @@
 import { gGameConfig } from "../../config/gameConfig.js";
 import {
+  AudioManager,
   gInputManager,
   gStateMachine,
   ResourceManager,
@@ -21,6 +22,7 @@ export class SetHighScore implements State {
         },
         this.levelState!.highScoreIndex
       );
+      AudioManager.play("confirm");
       gStateMachine.change("highScore");
       return;
     } else if (gInputManager.keyboard.wasPressed("ArrowUp")) {
@@ -29,28 +31,28 @@ export class SetHighScore implements State {
       } else {
         --this.name[this.highlighted];
       }
-      ResourceManager.sounds.select.play();
+      AudioManager.play("select");
     } else if (gInputManager.keyboard.wasPressed("ArrowDown")) {
       if (this.name[this.highlighted] === 90) {
         this.name[this.highlighted] = 65;
       } else {
         ++this.name[this.highlighted];
       }
-      ResourceManager.sounds.select.play();
+      AudioManager.play("select");
     } else if (gInputManager.keyboard.wasPressed("ArrowLeft")) {
       if (this.highlighted === 0) {
         this.highlighted = 2;
       } else {
         --this.highlighted;
       }
-      ResourceManager.sounds.select.play();
+      AudioManager.play("select");
     } else if (gInputManager.keyboard.wasPressed("ArrowRight")) {
       if (this.highlighted === 2) {
         this.highlighted = 0;
       } else {
         ++this.highlighted;
       }
-      ResourceManager.sounds.select.play();
+      AudioManager.play("select");
     }
   }
   draw(ctx: CanvasRenderingContext2D): void {

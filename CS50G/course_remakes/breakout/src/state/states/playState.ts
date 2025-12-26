@@ -1,5 +1,6 @@
 import {
   AABBColides,
+  AudioManager,
   gStateMachine,
   ResourceManager,
 } from "../../dependencies.js";
@@ -47,7 +48,7 @@ export class PlayState implements State {
         }
       }
 
-      ResourceManager.sounds["paddle-hit"].play();
+      AudioManager.play("paddle-hit");
     }
 
     ls.bricks.forEach((brick) => {
@@ -61,11 +62,11 @@ export class PlayState implements State {
 
           ls.recoverPoints = Math.min(100000, ls.recoverPoints * 2);
 
-          ResourceManager.sounds.recover.play();
+          AudioManager.play("recover");
         }
 
         if (this.checkVictory()) {
-          ResourceManager.sounds.victory.play();
+          AudioManager.play("victory");
           gStateMachine.change("victory", this.levelState!);
           return;
         }
@@ -93,7 +94,7 @@ export class PlayState implements State {
     });
 
     if (ball.y + ball.height >= gGameConfig.viewport.height) {
-      ResourceManager.sounds.hurt.play();
+      AudioManager.play("hurt");
       --ls.hearts;
 
       if (ls.hearts <= 0) {

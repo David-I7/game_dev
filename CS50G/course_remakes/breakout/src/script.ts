@@ -1,10 +1,10 @@
-import "./dependencies.js";
 import {
   displayFps,
   ResourceManager,
   gStateMachine,
   gGameConfig,
   gInputManager,
+  AudioManager,
 } from "./dependencies.js";
 
 window.addEventListener("load", () => {
@@ -17,8 +17,14 @@ window.addEventListener("load", () => {
   gGameConfig.viewport.dpi = window.devicePixelRatio;
   gGameConfig.viewport.scaler = gGameConfig.viewport.dpi * 2;
 
+  AudioManager.setPosition({
+    x: CANVAS_WIDTH - 48,
+    y: CANVAS_HEIGHT - 48,
+    width: 24,
+    height: 24,
+  });
   const background = ResourceManager.graphics.background;
-  const fps = displayFps("sec", { fillStyle: "white" });
+  const drawFps = displayFps("sec", { fillStyle: "white" });
   gStateMachine.change("start");
 
   let lastTime = 0;
@@ -28,12 +34,13 @@ window.addEventListener("load", () => {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     ctx.drawImage(background, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    fps(dt, ctx);
+    drawFps(dt, ctx);
 
     gStateMachine.update(dt);
     gInputManager.update();
 
     gStateMachine.draw(ctx);
+    AudioManager.draw(ctx);
 
     requestAnimationFrame(animate);
   }
